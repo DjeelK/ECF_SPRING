@@ -1,0 +1,22 @@
+Création des entity nécessaires au développement de l'application
+User
+-> relation OneToMany avec l'entité "Partie" (chaque joueur peut avoir plusieurs parties)
+
+Tournoi
+-> relation OneToMany avec l'entité "Match" (chaque tournoi peut avoir plusieurs matches)
+
+Match
+-> relation ManyToOne avec l'entité tournoi (chaque match appartient à un tournoi)
+-> relation ManyToOne avec l'entité user pour les joueurs (chaque match a deux joueurs)
+-> relation OnetoOne avec l'entité "Resultat" (chaque match a un résultat)
+
+Resultat
+-> relation OneToOne avec l'entité "Match" (chaque résultat est associé à un match)
+-> relation ManyToOne avec l'entité "User" pour le gagant et le perdant (chaque résultat a un gagnant et un perdant)
+
+Création de la BDD dans mySQL
+Création formulaire Log signIn/signUp pour récupération des données
+Créations des services/controller nécessaires au log.
+
+Création des services/controller/htlm de tournoi
+
