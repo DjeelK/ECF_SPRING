@@ -17,6 +17,7 @@ public class SessionLoginServiceImpl implements LoginService {
         httpSession.setAttribute("isLogged", true);
         httpSession.setAttribute("fullName", user.getFirstName() + " "+user.getLastName());
         httpSession.setAttribute("userId", user.getId());
+        httpSession.setAttribute("isAdmin", user.isAdmin());
         return true;
     }
 
@@ -29,5 +30,13 @@ public class SessionLoginServiceImpl implements LoginService {
     public int getUserId() {
         return (int)httpSession.getAttribute("userId");
     }
+
+    @Override
+    public boolean isAdmin() {
+        Object isLogged = httpSession.getAttribute("isLogged");
+        Object isAdmin = httpSession.getAttribute("isAdmin");
+        return isLogged != null && isAdmin != null && (boolean) isAdmin;
+    }
+
 
 }

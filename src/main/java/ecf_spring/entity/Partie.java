@@ -24,4 +24,7 @@ public class Partie {
     private AppUser appUser_2;
     @OneToOne
     private Resultat resultat;
+    @ManyToOne
+    private AppUser user;
+
 }

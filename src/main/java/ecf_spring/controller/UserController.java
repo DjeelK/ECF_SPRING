@@ -17,24 +17,17 @@ public class UserController {
 
     @Autowired
     private AppUserService appUserService;
-    @Autowired
-    private HttpServletResponse response;
-
-//    public UserController(AppUserService appUserService) {
-//    }
 
     @GetMapping("signin")
     public ModelAndView signIn(@RequestParam(required = false) String message) {
         ModelAndView mv = new ModelAndView("signin");
 
-        // Vérifier si le message est présent
         if (message != null && !message.isEmpty()) {
             mv.addObject("message", message);
         }
 
         return mv;
     }
-
     @PostMapping("signin")
     public String signIn(@RequestParam String email, @RequestParam String password) throws IOException {
         try {

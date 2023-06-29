@@ -19,8 +19,9 @@ public class Tournoi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Date dateDebut;
-    private Date dateFin;
+    private String title;
+    private String dateDebut;
+    private String dateFin;
     @OneToMany(mappedBy = "tournoi",fetch = FetchType.EAGER)
     private List <Partie> parties;
 

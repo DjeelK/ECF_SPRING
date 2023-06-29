@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tournoi</title>
+  <th:block th:insert="~{fragments/base.html :: head}"/>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <th:block th:insert="~{fragments/base.html :: header}"/>
+</header>
+<main class="d-flex flex-column align-items-center">
+  <h2>Tournoi</h2>
+  <div th:text="${message}"></div>
+  <table class="table table-striped table-dark rounded" style="width: 90%">
+    <thead>
+    <tr>
+      <th scope="col">ID :</th>
+      <th scope="col">Titre :</th>
+      <th scope="col">Date de début :</th>
+      <th scope="col">Date de fin :</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tournoi : ${tournois}">
+      <th th:text="${tournoi.getId()}"></th>
+      <th th:text="${tournoi.getTitle()}"></th>
+      <th th:text="${tournoi.getDateDebut()}"></th>
+      <th th:text="${tournoi.getDateFin()}"></th>
+    </tr>
+    </tbody>
+  </table>
+  <a href="/tournoi/add" class="btn btn-outline-light my-1"><i class="bi bi-plus-square"></i> Add</a>
+</main>
+</body>
+</html>

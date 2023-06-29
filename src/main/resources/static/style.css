@@ -1,3 +1,35 @@
 body {
     background-color: steelblue;
 }
+
+.profile-card {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+}
+
+.profile-card h2 {
+    margin-bottom: 20px;
+}
+
+.profile-card .ranking {
+    margin-bottom: 10px;
+}
+
+.profile-card .matches-history {
+    margin-top: 20px;
+}
+
+.profile-card .matches-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.profile-card .matches-history table th,
+.profile-card .matches-history table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}

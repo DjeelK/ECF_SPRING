@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "app_user")
 @Data
@@ -27,5 +29,8 @@ public class AppUser {
     @Column(name = "password")
     private String password;
     private boolean admin;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Partie> parties;
+
 }
 

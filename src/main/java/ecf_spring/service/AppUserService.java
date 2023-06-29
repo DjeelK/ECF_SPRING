@@ -1,10 +1,12 @@
 package ecf_spring.service;
 
 import ecf_spring.entity.AppUser;
+import ecf_spring.exception.NotAdminException;
 import ecf_spring.exception.NotSignInException;
 import ecf_spring.exception.UserExistException;
 import ecf_spring.exception.UserNotExistException;
 import ecf_spring.repository.AppUserRepository;
+import ecf_spring.repository.PartieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private PartieRepository partieRepository;
 
     @Autowired
     private LoginService loginService;
@@ -38,10 +43,25 @@ public class AppUserService {
             throw new UserNotExistException();
         }
     }
-
     public List<AppUser> getUsers() throws NotSignInException {
         if (loginService.isLogged()) {
             return (List<AppUser>) appUserRepository.findAll();
+        }
+        throw new NotSignInException();
+    }
+
+    public boolean disableUser(int userId) throws NotAdminException, NotSignInException, UserNotExistException {
+        if(loginService.isLogged()) {
+            if(loginService.isAdmin()) {
+                try {
+                    AppUser user = appUserRepository.findById(userId).get();
+                    appUserRepository.save(user);
+                    return true;
+                }catch (Exception ex) {
+                    throw new UserNotExistException();
+                }
+            }
+            throw new NotAdminException();
         }
         throw new NotSignInException();
     }
