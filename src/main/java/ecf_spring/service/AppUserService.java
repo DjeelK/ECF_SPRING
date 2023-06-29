@@ -43,6 +43,7 @@ public class AppUserService {
             throw new UserNotExistException();
         }
     }
+
     public List<AppUser> getUsers() throws NotSignInException {
         if (loginService.isLogged()) {
             return (List<AppUser>) appUserRepository.findAll();
@@ -51,13 +52,13 @@ public class AppUserService {
     }
 
     public boolean disableUser(int userId) throws NotAdminException, NotSignInException, UserNotExistException {
-        if(loginService.isLogged()) {
-            if(loginService.isAdmin()) {
+        if (loginService.isLogged()) {
+            if (loginService.isAdmin()) {
                 try {
                     AppUser user = appUserRepository.findById(userId).get();
                     appUserRepository.save(user);
                     return true;
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     throw new UserNotExistException();
                 }
             }
@@ -65,4 +66,28 @@ public class AppUserService {
         }
         throw new NotSignInException();
     }
+
+    public AppUser getAppUserById1(int appUser1Id) throws NotSignInException, UserNotExistException {
+        if (loginService.isLogged()) {
+            try {
+                return appUserRepository.findById(appUser1Id).get();
+            } catch (Exception ex) {
+                throw new UserNotExistException();
+            }
+        }
+        throw new NotSignInException();
+    }
+
+    public AppUser getAppUserById2(int appUser2Id) throws NotSignInException, UserNotExistException {
+        if (loginService.isLogged()) {
+            try {
+                return appUserRepository.findById(appUser2Id).get();
+            } catch (Exception ex) {
+                throw new UserNotExistException();
+            }
+        }
+        throw new NotSignInException();
+    }
+
 }
+

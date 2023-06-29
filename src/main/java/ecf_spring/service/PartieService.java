@@ -4,11 +4,7 @@ import ecf_spring.entity.AppUser;
 import ecf_spring.entity.Partie;
 import ecf_spring.entity.Resultat;
 import ecf_spring.entity.Tournoi;
-import ecf_spring.exception.EmptyFieldsException;
-import ecf_spring.exception.NotAdminException;
-import ecf_spring.exception.NotSignInException;
-
-import ecf_spring.exception.PartieNotExistException;
+import ecf_spring.exception.*;
 import ecf_spring.repository.PartieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +18,26 @@ public class PartieService {
     @Autowired
     private PartieRepository partieRepository;
 
-    public Partie createPartie(Tournoi tournoi, AppUser appUser1, AppUser appUser2) throws NotAdminException {
-        if (loginService.isLogged() && loginService.isAdmin()) {
-            Partie partie = Partie.builder()
-                    .tournoi(tournoi)
-                    .appUser_1(appUser1)
-                    .appUser_2(appUser2)
-                    .build();
-            return partieRepository.save(partie);
-        } else {
+    public boolean savePartie(Tournoi tournoi, AppUser appUser1, AppUser appUser2) throws PartieExistException, EmptyFieldsException, NotAdminException, NotSignInException {
+        if (loginService.isLogged()) {
+            if (loginService.isAdmin()) {
+                if (tournoi != null && appUser1 != null && appUser2 != null) {
+                    Partie partie = Partie.builder()
+                            .tournoi(tournoi)
+                            .appUser_1(appUser1)
+                            .appUser_2(appUser2)
+                            .build();
+                    if (partieRepository.existsByTournoi(tournoi, appUser1, appUser2)) {
+                        throw new PartieExistException();
+                    }
+                    partieRepository.save(partie);
+                    return true;
+                }
+                throw new EmptyFieldsException("tournoi, appUser1, appUser2");
+            }
             throw new NotAdminException();
         }
+        throw new NotSignInException();
     }
 
     public List<Partie> getParties() throws NotSignInException {
@@ -43,10 +48,10 @@ public class PartieService {
     }
 
     public Partie getPartieById(int id) throws NotSignInException, PartieNotExistException {
-        if (loginService.isLogged()) {
+        if(loginService.isLogged()) {
             try {
                 return partieRepository.findById(id).get();
-            } catch (Exception ex) {
+            }catch (Exception ex) {
                 throw new PartieNotExistException();
             }
         }
@@ -57,17 +62,12 @@ public class PartieService {
         if (loginService.isLogged()) {
             if (loginService.isAdmin()) {
                 if (resultat != null) {
-                    try {
-                        Partie partie = partieRepository.findById(id).get();
-                        partie.setResultat(resultat);
-                        partieRepository.save(partie);
-                        return true;
-                    }catch (Exception ex) {
-                        throw new PartieNotExistException ();
-                    }
-
+                    Partie partie = partieRepository.findById(id).get();
+                    partie.setResultat(resultat);
+                    partieRepository.save(partie);
+                    return true;
                 }
-                throw EmptyFieldsException.with("title");
+                throw new EmptyFieldsException("resultat");
             }
             throw new NotAdminException();
         }
